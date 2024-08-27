@@ -13,3 +13,35 @@
 .text-bold{
     font-weight: bold;
 }
+.users-wrapper{
+    width: 30%;
+    border-collapse: collapse;
+}
+.users-td{
+    border: 1px solid gray;
+    text-align: left;
+    padding: 5px;
+}
+
+.person-wrapper{
+    background-color: cadetblue;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    color: white;
+}
+
+.action-btn{
+    background-color: blanchedalmond;
+    color: black;
+}
+
+
+.action-btn:hover{
+    background-color: rgb(186, 147, 88) !important;
+    color: black!important;
+}
+
+.binding-wrapper{
+    margin-bottom: 100px;
+}

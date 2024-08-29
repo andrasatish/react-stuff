@@ -54,23 +54,32 @@ function Binding() {
     }
 
     const updatePersonDetails = (user) => {
-        console.log('selected user', user);
-        if(user.id === 101){
-            const _usersList = usersList;
-            const userIndex = _usersList.findIndex(eachUser => eachUser.id === user.id);
-            const updatedUser = {
-                name: 'John',
-                location: 'Chennai',
-                id: user.id
+        const updatedUserList = usersList.map((userDetail) => {
+            if (userDetail.id === user.id && user.id === 101) {
+                const updatedUser = {
+                    name: 'John',
+                    location: 'Chennai',
+                    id: user.id
+                }
+                return updatedUser;
             }
-            _usersList.splice(userIndex,1,updatedUser);
-            console.log('user list', _usersList)
-            setUsersList(_usersList);
-            // setUsersList
-        }
-        if(user.id === 102){
 
-        }
+            if (userDetail.id === user.id && user.id === 102) {
+                const updatedUser = {
+                    name: 'Sudheer',
+                    location: 'New Delhi',
+                    id: user.id
+                }
+                return updatedUser;
+            }
+            return userDetail;
+        })
+        setUsersList(updatedUserList);
+    }
+
+    const deletePersonDetails = (user) => {
+        const filterExistingPerson = usersList.filter((userDetail)=> userDetail.id !== user.id);
+        setUsersList(filterExistingPerson);
     }
 
     return (
@@ -123,7 +132,7 @@ function Binding() {
             </div>
 
 
-            <hr/>
+            <hr />
             {/* update array values */}
             <table className="users-wrapper">
                 <thead>
@@ -141,7 +150,8 @@ function Binding() {
                                     <td className="users-td">{user.name}</td>
                                     <td className="users-td">{user.location}</td>
                                     <td className="users-td">
-                                        <Button type="primary" onClick={()=>{updatePersonDetails(user)}} className="action-btn">Update</Button>
+                                        <Button type="primary" onClick={() => { updatePersonDetails(user) }} className="action-btn">Update</Button> &nbsp;
+                                        <Button type="primary" onClick={() => { deletePersonDetails(user) }} className="action-btn">Delete</Button> &nbsp;
                                     </td>
                                 </tr>
                             )

@@ -5,6 +5,7 @@
     margin: 30px auto;
     padding: 20px;
     gap: 20px;
+    overflow: hidden;
 }
 .curd-item-container{
     width: 50%;
@@ -12,6 +13,8 @@
 .table-container{
     width: 100%;
     border-collapse: collapse;
+    box-sizing: border-box;
+    overflow: auto;
 }
 
 .table-container th{
@@ -21,4 +24,11 @@
 .table-container th,.table-container td{
     border: 1px solid gray;
     padding: 5px;
+}
+
+.pills{
+    background: aqua;
+    padding: 4px;
+    border-radius: 10px;
+    margin: 2px;
 }

@@ -10,18 +10,49 @@ const Curd = () => {
 
     const [genderData, setGender] = useState('male');
     const [touristList, setTouristList] = useState([]);
-
-    const onFinish = (values) => {
-        setTouristList([values,...touristList]);
+    const [editedObj, setEditedObj] = useState({});
+     
+    const onSubmit = () => {
+        const formatAddObj = {
+            ...form.getFieldsValue(),
+            id: Math.random().toString(16).slice(2)
+        }
+        setTouristList([formatAddObj,...touristList]);
         form.resetFields();
-    };
-
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
     };
 
     const onGenderChange = ({ target: { value } }) => {
         setGender(value)
+    }
+
+    const onEdit = (tourist) => {
+        setEditedObj(tourist);
+        form.setFieldsValue({
+            name : tourist.name,
+            location : tourist.location,
+            age : tourist.age,
+            state : tourist.state,
+            gender : tourist.gender,
+            placeType : tourist.placeType
+        })
+    }
+
+    const onDelete = (tourist) => {
+        const updatedTourists = touristList.filter((tourPerson) => tourPerson.id !== tourist.id);
+        setTouristList(updatedTourists);
+    }
+
+    const onUpdate = () => {
+        const updatedTourists = touristList.map((tourist)=>{
+            if(tourist.id === editedObj.id){
+                return form.getFieldsValue();
+            }else{
+                return tourist;
+            }
+        })
+        setTouristList(updatedTourists);
+        form.resetFields();
+        setEditedObj({});
     }
 
     return (
@@ -34,8 +65,6 @@ const Curd = () => {
                     wrapperCol={{ span: 18 }}
                     style={{ maxWidth: 600 }}
                     initialValues={{ remember: true }}
-                    onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
                     autoComplete="off"
                     colon={false}
                     labelAlign={'left'}
@@ -80,7 +109,6 @@ const Curd = () => {
                         />
                     </Form.Item>
 
-
                     <Form.Item
                         label="Gender"
                         name="gender">
@@ -96,12 +124,13 @@ const Curd = () => {
                         <Checkbox.Group options={placeTypeList} />
                     </Form.Item>
 
-
-
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                         <Space size={"small"}>
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" onClick={onSubmit}>
                                 Submit
+                            </Button>
+                            <Button type="primary" onClick={onUpdate}>
+                                Update
                             </Button>
                             <Button type="primary" htmlType="reset">
                                 Reset
@@ -112,6 +141,7 @@ const Curd = () => {
             </div>
             <div className='curd-item-container'>
                 <h2 style={{ textAlign: 'center' }}>Tourists</h2>
+                <div className='table-wrapper'>
                 <table className='table-container'>
                     <thead>
                         <tr>
@@ -128,7 +158,7 @@ const Curd = () => {
                         {
                             touristList.map((tourist) => {
                                 return (
-                                    <tr>
+                                    <tr key={tourist.id}>
                                         <td>{tourist.name}</td>
                                         <td>{tourist.location}</td>
                                         <td>{tourist.age}</td>
@@ -145,8 +175,8 @@ const Curd = () => {
                                             </td>
                                         <td>
                                             <Space size={"small"}>
-                                                <Button type="primary" size={"small"}>Edit</Button>
-                                                <Button type="primary" size={"small"}>Delete</Button>
+                                                <Button type="primary" size={"small"} onClick={()=>{onEdit(tourist)}}>Edit</Button>
+                                                <Button type="primary" size={"small"} onClick={()=>{onDelete(tourist)}}>Delete</Button>
                                             </Space>
                                         </td>
                                     </tr>
@@ -155,6 +185,7 @@ const Curd = () => {
                         }
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
     )

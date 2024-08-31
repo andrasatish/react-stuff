@@ -32,3 +32,10 @@
     border-radius: 10px;
     margin: 2px;
 }
+
+.table-wrapper{
+    width: 100%;
+    height: 150px;
+    overflow: auto;
+    background-color: rgb(222, 208, 208);
+}

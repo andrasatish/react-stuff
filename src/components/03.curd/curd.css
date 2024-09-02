@@ -39,3 +39,10 @@
     overflow: auto;
     background-color: rgb(222, 208, 208);
 }
+
+.alert-container{
+    position: absolute;
+    top: 8px;
+    width: 40%;
+    left: 36%;
+}

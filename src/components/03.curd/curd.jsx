@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './curd.css';
-import { Button, Space, Form, Input, InputNumber, Select, Radio, Checkbox, Modal, Alert } from 'antd';
+import { Button, Space, Form, Input, InputNumber, Select, Radio, Checkbox, Modal, Alert, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const Curd = () => {
     const [form] = Form.useForm();
@@ -13,7 +14,7 @@ const Curd = () => {
     const [editedObj, setEditedObj] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDetailsSaved, setIsDetailsSaved] = useState(false);
-
+    const [updateOpen, setUpdateOpen] = useState(false);
 
     const onSubmit = () => {
         setIsModalOpen(true);
@@ -59,6 +60,10 @@ const Curd = () => {
     }
 
     const onUpdate = () => {
+        setUpdateOpen(true);
+    }
+
+    const handleUpdate = () => {
         const updatedTourists = touristList.map((tourist) => {
             if (tourist.id === editedObj.id) {
                 return form.getFieldsValue();
@@ -69,13 +74,14 @@ const Curd = () => {
         setTouristList(updatedTourists);
         form.resetFields();
         setEditedObj({});
+        setUpdateOpen(false);
     }
 
     return (
         <>
             <div className='curd-container'>
                 <div className='curd-item-container'>
-                    <h2> { Object.keys(editedObj)?.length === 0 ? 'Add' : `Edit ${form.getFieldsValue()?.name}` } tourist details</h2>
+                    <h2> {Object.keys(editedObj)?.length === 0 ? 'Add' : `Edit ${form.getFieldsValue()?.name}`} tourist details</h2>
                     <Form
                         name="basic"
                         labelCol={{ span: 6 }}
@@ -156,7 +162,7 @@ const Curd = () => {
                                 }
 
 
-                                <Button type="primary" htmlType="reset">
+                                <Button type="primary" htmlType="reset" className='danger-button-bg'>
                                     Reset
                                 </Button>
                             </Space>
@@ -200,7 +206,7 @@ const Curd = () => {
                                                 <td>
                                                     <Space size={"small"}>
                                                         <Button type="primary" size={"small"} onClick={() => { onEdit(tourist) }}>Edit</Button>
-                                                        <Button type="primary" size={"small"} onClick={() => { onDelete(tourist) }}>Delete</Button>
+                                                        <Button type="primary"  className='danger-button-bg' size={"small"} onClick={() => { onDelete(tourist) }}>Delete</Button>
                                                     </Space>
                                                 </td>
                                             </tr>
@@ -220,13 +226,34 @@ const Curd = () => {
                 </Modal>
             </div>
 
+            <div>
+                <Modal
+                    title="Update tourist"
+                    open={updateOpen}
+                    onOk={handleUpdate}
+                    okText="Confirm"
+                    onCancel={()=>{setUpdateOpen(false)}}
+                    cancelButtonProps={{ style: { display: 'none' } }}
+                >
+                    <p>Do you want to update?</p>
+                </Modal>
+            </div>
+
             {/* Alert Display */}
             {
                 isDetailsSaved && (
                     <div className='alert-container'>
-                        <Alert message="Details saved successfully!" type="success" />
+                        <Alert message="Details saved successfully!" type="success" showIcon />
                     </div>
                 )
+            }
+
+            {
+               isDetailsSaved && ( 
+                <div className='spin-container'>
+                     <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+                </div>
+               )
             }
         </>
     )
